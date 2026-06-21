@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Marcus The Barber | Indianapolis Barber Website Demo</title>
+  <meta name="description" content="One-page barber website demo for an independent barber. Showcase cuts, services, reviews, and booking in one professional landing page." />
+
+  <style>
+    :root {
+      --black: #0b0b0b;
+      --charcoal: #151515;
+      --dark: #1f1f1f;
+      --gold: #c79b43;
+      --gold-light: #e8c878;
+      --cream: #f7f1e6;
+      --white: #ffffff;
+      --muted: #c9c2b7;
+      --text: #222222;
+      --radius: 22px;
+      --shadow: 0 24px 60px rgba(0,0,0,.28);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.6;
+    }
+    img { width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    .container { width: min(1120px, calc(100% - 36px)); margin: 0 auto; }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11,11,11,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 22px;
+      padding: 16px 0;
+    }
+    .brand {
+      font-weight: 900;
+      font-size: 1.05rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .brand span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      font-size: .92rem;
+      font-weight: 800;
+      color: rgba(255,255,255,.78);
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      font-weight: 900;
+      transition: .2s ease;
+      border: 0;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: #111;
+      box-shadow: 0 14px 30px rgba(199,155,67,.24);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background: var(--gold-light);
+    }
+    .btn-outline {
+      border: 2px solid rgba(255,255,255,.7);
+      color: var(--white);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,.1); }
+
+    .hero {
+      min-height: 92vh;
+      position: relative;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+      padding: 110px 0 90px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.62) 48%, rgba(0,0,0,.25) 100%),
+        url("https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=1800&q=85");
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+    .eyebrow {
+      color: var(--gold-light);
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: .12em;
+      font-size: .82rem;
+      margin-bottom: 14px;
+    }
+    h1, h2, h3 { margin: 0; line-height: 1.08; }
+    h1 {
+      font-size: clamp(3rem, 7vw, 6.2rem);
+      letter-spacing: -.07em;
+      margin-bottom: 24px;
+    }
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.45rem);
+      letter-spacing: -.045em;
+      margin-bottom: 18px;
+    }
+    h3 { font-size: 1.25rem; margin-bottom: 10px; }
+    .lead {
+      color: rgba(255,255,255,.78);
+      font-size: 1.18rem;
+      max-width: 650px;
+      margin: 0 0 30px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .trust-line {
+      color: rgba(255,255,255,.68);
+      font-weight: 800;
+      font-size: .95rem;
+    }
+
+    .section { padding: 90px 0; }
+    .section.light { background: var(--cream); color: var(--text); }
+    .section.dark { background: var(--charcoal); }
+    .section-header {
+      max-width: 760px;
+      margin-bottom: 42px;
+    }
+    .section-header.center {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .section-header p {
+      color: #61594d;
+      font-size: 1.06rem;
+      margin: 0;
+    }
+    .dark .section-header p { color: rgba(255,255,255,.72); }
+
+    .split {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .portrait-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.12);
+      background: var(--dark);
+    }
+    .portrait-card img {
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+    }
+    .about-box {
+      background: #fff;
+      color: var(--text);
+      padding: 38px;
+      border-radius: var(--radius);
+      box-shadow: 0 20px 48px rgba(0,0,0,.08);
+    }
+    .about-box p {
+      color: #5d554c;
+      margin-top: 0;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .stat {
+      background: #f4ead8;
+      border-radius: 16px;
+      padding: 18px;
+      font-weight: 900;
+      color: var(--black);
+    }
+    .stat span {
+      display: block;
+      color: var(--gold);
+      font-size: 1.8rem;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .service-card {
+      background: #fff;
+      color: var(--text);
+      padding: 28px;
+      border-radius: var(--radius);
+      box-shadow: 0 14px 34px rgba(0,0,0,.08);
+      border: 1px solid rgba(0,0,0,.05);
+    }
+    .service-card .price {
+      color: var(--gold);
+      font-weight: 900;
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+    .service-card p {
+      color: #655d54;
+      margin: 0;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .gallery-item {
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      background: #333;
+      min-height: 260px;
+    }
+    .gallery-item.tall { grid-row: span 2; }
+    .gallery-item img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform .35s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.05); }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .review {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius);
+      padding: 26px;
+    }
+    .stars {
+      color: var(--gold-light);
+      letter-spacing: .08em;
+      margin-bottom: 14px;
+    }
+    .review p { color: rgba(255,255,255,.75); }
+    .review strong { color: #fff; }
+
+    .booking {
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.88), rgba(0,0,0,.52)),
+        url("https://images.pexels.com/photos/3998429/pexels-photo-3998429.jpeg?auto=compress&cs=tinysrgb&w=1800");
+      background-size: cover;
+      background-position: center;
+      padding: 90px 0;
+      text-align: center;
+    }
+    .booking h2 { color: #fff; }
+    .booking p {
+      color: rgba(255,255,255,.76);
+      max-width: 700px;
+      margin: 0 auto 28px;
+      font-size: 1.08rem;
+    }
+
+    .contact-card {
+      background: var(--cream);
+      color: var(--text);
+      border-radius: var(--radius);
+      padding: 38px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+    .contact-details {
+      display: grid;
+      gap: 12px;
+      color: #5f564d;
+      font-weight: 800;
+    }
+    .contact-details span { color: var(--gold); }
+
+    footer {
+      background: #050505;
+      color: rgba(255,255,255,.58);
+      padding: 30px 0;
+      font-size: .9rem;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .split, .contact-card { grid-template-columns: 1fr; }
+      .services-grid, .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { min-height: 82vh; }
+    }
+
+    @media (max-width: 620px) {
+      .container { width: min(100% - 28px, 1120px); }
+      .brand { font-size: .92rem; }
+      .services-grid, .reviews-grid, .stats { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item { min-height: 320px; }
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; }
+      .section { padding: 70px 0; }
+      .about-box, .contact-card { padding: 26px; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Barbershop",
+    "name": "Marcus The Barber",
+    "description": "Independent barber website demo for haircuts, beard trims, fades, lineups, and online booking.",
+    "telephone": "+1-317-555-0199",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Indianapolis",
+      "addressRegion": "IN",
+      "addressCountry": "US"
+    },
+    "priceRange": "$$"
+  }
+  </script>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="brand">Marcus <span>The Barber</span></a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#gallery">Cuts</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#book">Book</a>
+      </div>
+      <a href="#book" class="btn btn-primary">Book Now</a>
+    </div>
+  </nav>
+
+  <section id="home" class="hero">
+    <div class="container hero-content">
+      <div class="eyebrow">Indianapolis Barber • Fades • Lineups • Beard Work</div>
+      <h1>Clean Cuts. Sharp Lines. Real Confidence.</h1>
+      <p class="lead">A professional one-page website demo for independent barbers who want to showcase their work, build trust, and make it easy for clients to book.</p>
+      <div class="hero-actions">
+        <a href="#book" class="btn btn-primary">Book Appointment</a>
+        <a href="#gallery" class="btn btn-outline">View My Work</a>
+      </div>
+      <div class="trust-line">11+ years experience • Online booking • Professional portfolio • Mobile friendly</div>
+    </div>
+  </section>
+
+  <section id="about" class="section light">
+    <div class="container split">
+      <div class="portrait-card">
+        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=1100&q=85" alt="Black barber giving a client a haircut in a barbershop">
+      </div>
+      <div class="about-box">
+        <div class="eyebrow">About The Barber</div>
+        <h2>More than a haircut — it's the way you leave the chair.</h2>
+        <p>Marcus is an independent barber focused on clean fades, sharp lineups, beard grooming, and consistent service. Every appointment is built around precision, communication, and making sure each client leaves looking better and feeling more confident.</p>
+        <p>Whether you need a fresh cut for work, church, date night, photos, or just regular maintenance, the goal is simple: give you a clean look that fits your style.</p>
+        <div class="stats">
+          <div class="stat"><span>11+</span>Years Cutting</div>
+          <div class="stat"><span>500+</span>Clean Cuts</div>
+          <div class="stat"><span>5★</span>Client Focused</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section light" style="padding-top:0;">
+    <div class="container">
+      <div class="section-header center">
+        <div class="eyebrow">Services & Pricing</div>
+        <h2>Simple services. Clean results.</h2>
+        <p>Replace these demo prices with the barber's real service list, booking platform, and availability.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card"><div class="price">$35</div><h3>Adult Haircut</h3><p>Clean fade, taper, or regular cut with attention to shape, detail, and finish.</p></div>
+        <div class="service-card"><div class="price">$45</div><h3>Haircut + Beard</h3><p>Full haircut with beard shaping, razor detail, and a polished final look.</p></div>
+        <div class="service-card"><div class="price">$25</div><h3>Kids Cut</h3><p>Clean, patient service for kids who need a sharp, age-appropriate haircut.</p></div>
+        <div class="service-card"><div class="price">$20</div><h3>Lineup</h3><p>Hairline, beard line, and neck cleanup for a fresh look between full cuts.</p></div>
+        <div class="service-card"><div class="price">$25</div><h3>Beard Trim</h3><p>Beard shaping, cleanup, and detail work to keep your facial hair sharp.</p></div>
+        <div class="service-card"><div class="price">$55+</div><h3>Premium Service</h3><p>Custom grooming experience for special occasions, photos, or important events.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section dark">
+    <div class="container">
+      <div class="section-header center">
+        <div class="eyebrow">Portfolio</div>
+        <h2>Show the work before they book.</h2>
+        <p>For a real barber site, this section should use actual client photos, before-and-after cuts, fades, beard work, and lineup closeups.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item tall"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=900&q=85" alt="Black barber shaping a haircut with clippers"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=900&q=85" alt="Barber cutting a Black man's hair"></div>
+        <div class="gallery-item"><img src="https://images.pexels.com/photos/3998429/pexels-photo-3998429.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Barber tools and haircut service"></div>
+        <div class="gallery-item tall"><img src="https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?auto=format&fit=crop&w=900&q=85" alt="Modern barbershop haircut service"></div>
+        <div class="gallery-item"><img src="https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Barber using clippers during haircut"></div>
+        <div class="gallery-item"><img src="https://images.pexels.com/photos/3992874/pexels-photo-3992874.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Barbershop grooming and haircut"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews" class="section dark" style="padding-top:0;">
+    <div class="container">
+      <div class="section-header center">
+        <div class="eyebrow">Client Reviews</div>
+        <h2>Trust makes people book.</h2>
+        <p>Replace these with real Google, Booksy, StyleSeat, or social media reviews.</p>
+      </div>
+
+      <div class="reviews-grid">
+        <div class="review"><div class="stars">★★★★★</div><p>"Always consistent. I know exactly what I'm getting every time I sit in the chair."</p><strong>— James R.</strong></div>
+        <div class="review"><div class="stars">★★★★★</div><p>"Clean fade, sharp lineup, and professional service. Definitely my go-to barber."</p><strong>— Andre M.</strong></div>
+        <div class="review"><div class="stars">★★★★★</div><p>"He listens, takes his time, and makes sure the cut fits your style."</p><strong>— Devin T.</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="book" class="booking">
+    <div class="container">
+      <div class="eyebrow">Book Your Cut</div>
+      <h2>Ready for a fresh look?</h2>
+      <p>Use this section to link directly to Booksy, StyleSeat, Squire, Vagaro, Calendly, or a simple contact form. Make booking the easiest action on the page.</p>
+      <a href="#" class="btn btn-primary">Book Appointment</a>
+    </div>
+  </section>
+
+  <section class="section light">
+    <div class="container">
+      <div class="contact-card">
+        <div>
+          <div class="eyebrow">Location & Contact</div>
+          <h2>Indianapolis Barber</h2>
+          <p>Replace this demo information with the barber's real shop location, suite number, booking link, Instagram, and Google Business Profile.</p>
+        </div>
+        <div class="contact-details">
+          <div><span>Phone:</span> 317-555-0199</div>
+          <div><span>Location:</span> Indianapolis, Indiana</div>
+          <div><span>Hours:</span> Tue–Sat by appointment</div>
+          <div><span>Booking:</span> Booksy / StyleSeat / Squire</div>
+          <div><span>Instagram:</span> @marcusthebarber</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>© 2026 Marcus The Barber. Demo website by Darryl Hale.</div>
+      <div>Barber Website • Portfolio • Booking Page</div>
+    </div>
+  </footer>
+</body>
+</html>
